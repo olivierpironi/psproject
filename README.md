@@ -10,6 +10,8 @@
 ![-JAVA-yellowgreen](https://user-images.githubusercontent.com/78506173/213751115-c49e5daa-86bf-437f-9e81-22f53927f2c1.svg)
 ![-SPRINGBOOT (DATA, SECURITY)-lightgrey](https://user-images.githubusercontent.com/78506173/213750766-ca4acb29-0a33-4dc2-b524-d46c18ed71db.svg)
 ![-MySQL-blue](https://user-images.githubusercontent.com/78506173/213750497-5c0353b9-2e9c-4c2c-bc82-d612eaf6285d.svg)
+![-MAVEN-9cf](https://user-images.githubusercontent.com/78506173/213756699-a20538f4-da6b-4a2a-b432-ad869d95f687.svg)
+![-LOMBOK-yellow](https://user-images.githubusercontent.com/78506173/213756863-ea1b36f6-8dca-4762-813d-f1f09054ae58.svg)
 
 </h6>
 
