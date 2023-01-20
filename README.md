@@ -19,14 +19,14 @@ Banco Digital que conta com as funções:
   - Rendimento mensal através da poupança.
   - Depósito; 
   - Saque; 
-  - Pix; 
+  - Operação pix, cadastro e emissão de chavespix; 
   - Recebe pagamentos de cartões.
  
 - `Conta Corrente`: 
   - Tarifa mensal de utilização da conta.
   - Depósito; 
   - Saque; 
-  - Pix; 
+  - Operação pix, cadastro e emissão de chavespix;
   - Recebe pagamentos de cartões;
   - Possibilidade de emissão de cartões de débito e crédito.
  
