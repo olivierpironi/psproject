@@ -52,6 +52,8 @@ Banco Digital que conta com as funções:
 
 
  📁 Arquivo JSON para consumo da API
- 
-[BANCOOGP.postman_collection.zip](https://github.com/olivierpironi/psproject/files/10468190/BANCOOGP.postman_collection.zip)
+ [BANCOOGP.postman_collection.zip](https://github.com/olivierpironi/psproject/files/10471479/BANCOOGP.postman_collection.zip)
+
+
+
 
