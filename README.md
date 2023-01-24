@@ -49,7 +49,9 @@ Banco Digital que conta com as funções:
    - Emitir fatura; 
    - Pagar fatura utilizando saldo da conta corrente.
 
-
+🛠️Proxímas etapas:
+ - Testes Unitários;
+ - Revisão do modelo de arquitetura do projeto.
 
  📁 Arquivo JSON para consumo da API
 
