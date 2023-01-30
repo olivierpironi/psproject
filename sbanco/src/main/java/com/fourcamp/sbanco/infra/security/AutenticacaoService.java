@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.fourcamp.sbanco.repository.ContaRepository;
+import com.fourcamp.sbanco.domain.repository.ContaRepository;
 
 @Service
 public class AutenticacaoService implements UserDetailsService{

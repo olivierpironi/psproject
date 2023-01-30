@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.fourcamp.sbanco.repository.ContaRepository;
+import com.fourcamp.sbanco.domain.repository.ContaRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
