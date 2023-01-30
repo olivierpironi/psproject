@@ -51,7 +51,7 @@ Banco Digital que conta com as funções:
 
 🛠️Proxímas etapas:
  - Testes Unitários;
- - Revisão do modelo de arquitetura do projeto.
+ - Documentação com Swagger Fox.
 
  📁 Arquivo JSON para consumo da API
 
