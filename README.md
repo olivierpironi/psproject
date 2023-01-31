@@ -2,7 +2,8 @@
 
 <h3 align="center"> 
 
-![STATUS-EM DESENVOLVIMENTO-green](https://user-images.githubusercontent.com/78506173/213749912-57072269-9d85-4567-abd5-6cea10ced651.svg)
+![STATUS-EM DESENVOLVIMENTO-yellow](https://user-images.githubusercontent.com/78506173/215845105-7f0a4fb1-0186-4912-bda9-aa4b2c46b841.svg)
+
  </h3>
 <h6 align="center"> 
  
@@ -14,8 +15,7 @@
 ![-LOMBOK-yellow](https://user-images.githubusercontent.com/78506173/213756863-ea1b36f6-8dca-4762-813d-f1f09054ae58.svg)
 
 </h6>
-
-Banco Digital que conta com as funções:
+Em desenvolvimento utilizando uma adaptação da arquitetura clean architeture, o banco já conta com as seguintes funções:
 
 - `Conta Poupança`: 
   - Rendimento mensal através da poupança.
@@ -51,7 +51,10 @@ Banco Digital que conta com as funções:
 
 🛠️Proxímas etapas:
  - Testes Unitários;
+ - Sistema de logs;
+ - Sistema de roles utilizando spring secutiry;
  - Documentação com Swagger Fox.
+
 
  📁 Arquivo JSON para consumo da API
 
