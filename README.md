@@ -50,7 +50,7 @@ Em desenvolvimento utilizando uma adaptação da arquitetura clean architeture, 
    - Pagar fatura utilizando saldo da conta corrente.
 
 🛠️Proxímas etapas:
- - Testes Unitários;
+ - Testes unitários;
  - Sistema de logs;
  - Sistema de roles utilizando spring secutiry;
  - Documentação com Swagger Fox.
