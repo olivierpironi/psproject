@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
 import com.fourcamp.sbanco.domain.dto.conta.ContaDTO;
@@ -22,9 +23,12 @@ import com.fourcamp.sbanco.domain.dto.pix.ChavePixDTO;
 import com.fourcamp.sbanco.domain.dto.pix.DadosCadastroChavePix;
 import com.fourcamp.sbanco.domain.dto.pix.DadosPix;
 import com.fourcamp.sbanco.domain.dto.pix.DetalhamentoChavesPix;
+import com.fourcamp.sbanco.domain.dto.role.AssociaRoles;
+import com.fourcamp.sbanco.domain.dto.role.Role;
 import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
 import com.fourcamp.sbanco.domain.dto.transacao.TransacaoDTO;
 import com.fourcamp.sbanco.domain.enums.EnumTransacao;
+import com.fourcamp.sbanco.domain.repository.AssociaRolesRepository;
 import com.fourcamp.sbanco.domain.repository.ContaRepository;
 import com.fourcamp.sbanco.infra.exceptions.SenhaInvalidaException;
 import com.fourcamp.sbanco.infra.exceptions.TransacaoInvalidaException;
@@ -32,6 +36,7 @@ import com.fourcamp.sbanco.infra.exceptions.TransacaoInvalidaException;
 import jakarta.validation.Valid;
 
 @Service
+@Transactional
 public class ContaService {
 
 	@Autowired
@@ -44,14 +49,22 @@ public class ContaService {
 	private ChavePixService chavePixService;
 	@Autowired
 	private ExtratoBancarioService extratoService;
+	@Autowired
+	private AssociaRolesRepository assoRepo;
 
 	public ContaPoupancaDTO cadastrarCP(@Valid DadosCadastroConta dados) {
 		ClienteDTO cliente = clienteService.getByCpf(dados.cpfCliente());
-		return contaRepository.save(new ContaPoupancaDTO(cliente, dados.senha()));
+		ContaPoupancaDTO conta = contaRepository.save(new ContaPoupancaDTO(cliente, dados.senha()));
+		Role role = new Role("CP");
+		assoRepo.save(new AssociaRoles(conta, role));
+		conta.getRoles().add(role);
+		return conta;
 	}
 	public ContaCorrenteDTO cadastrarCC(@Valid DadosCadastroConta dados) {
 		ClienteDTO cliente = clienteService.getByCpf(dados.cpfCliente());
-		return contaRepository.save(new ContaCorrenteDTO(cliente, dados.senha()));
+		ContaCorrenteDTO conta = contaRepository.save(new ContaCorrenteDTO(cliente, dados.senha()));
+		assoRepo.save(new AssociaRoles(conta, new Role("CC")));
+		return conta;
 	}
 
 	public ContaDTO getByNumeroDaConta(Long numeroDaConta) {
@@ -73,9 +86,9 @@ public class ContaService {
 		execTaxasERendimentos(conta);
 		checaSenha(conta, dados.senha());
 		checaEntradaSaldo(bdDeposito);
-		
+//		contaRepository.save(conta);
 		TransacaoDTO transacao = new TransacaoDTO(EnumTransacao.DEPOSITO, conta, bdDeposito);
-		transacaoService.salvar(transacao);
+//		transacaoService.salvar(transacao);
 		
 		conta.setSaldo(conta.getSaldo().add(transacao.getValor()));
 		extratoService.registraTransacao(conta.getExtrato(), transacao);

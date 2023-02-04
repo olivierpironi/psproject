@@ -26,8 +26,9 @@ public class SecutiryConfigurations {
 		return http.csrf().disable()
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/login/**")
-				.permitAll().anyRequest().authenticated()
+				.and().authorizeHttpRequests()
+				.requestMatchers(HttpMethod.POST, "/login/**").permitAll()
+				.anyRequest().authenticated()
 				
 				.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build(); //TODO criar conta antes de estar logado

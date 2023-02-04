@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +23,6 @@ import com.fourcamp.sbanco.domain.dto.fatura.PagarFatura;
 import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
 import com.fourcamp.sbanco.domain.service.CartaoCreditoService;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -34,7 +33,6 @@ public class CartaoCreditoController {
 	private CartaoCreditoService cartaoService;
 
 	@PostMapping("/emitir")
-	@Transactional
 	public ResponseEntity<DetalhamentoDadosCartaoCredito> emitirCartaoDeCredito(@RequestBody @Valid DadosCadastroCartaoCredito dados) {
 		CartaoCreditoDTO cartao = cartaoService.emitirCartaoDeCredito(dados);
 		return ResponseEntity.created(URI.create("/cartaocredito/"+cartao.getNumero())).body(new DetalhamentoDadosCartaoCredito(cartao));
@@ -45,33 +43,28 @@ public class CartaoCreditoController {
 		return ResponseEntity.ok(cartaoService.getById(numeroDoCartao));
 	}
 
-	@PutMapping("/desbloquear")
-	@Transactional
+	@PatchMapping("/desbloquear")
 	public ResponseEntity<DetalhamentoDadosCartaoCredito> desbloquear(@RequestBody @Valid DadosAtualizarCartao dados) {
 		return ResponseEntity.ok(cartaoService.desbloquearCartao(dados));
 	}
 
-	@PutMapping("/bloquear")
-	@Transactional
+	@PatchMapping("/bloquear")
 	public ResponseEntity<DetalhamentoDadosCartaoCredito> bloquear(@RequestBody @Valid DadosAtualizarCartao dados) {
 		return ResponseEntity.ok(cartaoService.bloquearCartao(dados));
 	}
 
-	@PutMapping("/pagar")
-	@Transactional
+	@PatchMapping("/pagar")
 	public ResponseEntity<Object> pagarComCredito(@RequestBody @Valid PagarComCartao dados) {
 		return ResponseEntity.ok().body(cartaoService.pagarComCredito(dados));
 		
 	}
 
 	@GetMapping("/exibirfatura")
-	@Transactional
 	public ResponseEntity<List<DetalhamentoTransacao>> exibirFatura(@RequestBody @Valid DadosNumeroESenhaCartao dados) {
 		return ResponseEntity.ok().body(cartaoService.exibirFatura(dados));
 	}
 
-	@PutMapping("/pagarfatura")
-	@Transactional
+	@PatchMapping("/pagarfatura")
 	public ResponseEntity<DetalhamentoTransacao> pagarFaturaComSaldo(@RequestBody @Valid PagarFatura dados) {
 		return ResponseEntity.ok().body(cartaoService.pagarFaturaComSaldo(dados));
 	}

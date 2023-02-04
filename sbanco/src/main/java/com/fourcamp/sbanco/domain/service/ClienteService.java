@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
 import com.fourcamp.sbanco.domain.dto.cliente.DadosAtualizarCliente;
@@ -36,6 +37,7 @@ public class ClienteService {
 
 	}
 
+	@Transactional
 	public DetalhaCliente atualizarInformacoes(@Valid DadosAtualizarCliente dados) {
 		ClienteDTO cliente = clienteRepository.findById(dados.cpf()).get();
 		if (dados.nome() != null)

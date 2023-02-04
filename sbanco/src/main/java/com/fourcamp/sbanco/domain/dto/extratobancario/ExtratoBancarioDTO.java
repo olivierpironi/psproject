@@ -37,7 +37,7 @@ public class ExtratoBancarioDTO {
 	private Long id;
 	@OneToOne
 	private ContaDTO contaMae;
-	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @ElementCollection(targetClass=TransacaoDTO.class)
 	private List<TransacaoDTO> historicoTransacoes = new ArrayList<>();
 

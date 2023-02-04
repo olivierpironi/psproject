@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fourcamp.sbanco.domain.dto.cartao.CartaoDTO;
 import com.fourcamp.sbanco.domain.dto.cartao.DadosAtualizarCartao;
@@ -25,6 +26,7 @@ import com.fourcamp.sbanco.infra.exceptions.SenhaInvalidaException;
 import com.fourcamp.sbanco.infra.exceptions.TransacaoInvalidaException;
 
 @Service
+@Transactional
 public class CartaoDebitoService {
 	@Autowired
 	private CartaoDebitoRepository cartaoRepository;

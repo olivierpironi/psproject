@@ -1,6 +1,7 @@
 package com.fourcamp.sbanco.domain.dto.contapoupanca;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,9 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
 import com.fourcamp.sbanco.domain.dto.conta.ContaDTO;
+import com.fourcamp.sbanco.domain.dto.role.Role;
 import com.fourcamp.sbanco.domain.enums.EnumConta;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +36,8 @@ import lombok.Setter;
 public class ContaPoupancaDTO extends ContaDTO {
 
 	private LocalDate ultimoRendimento = LocalDate.of(2023, 1, 1);
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Role> roles = new ArrayList<>();
 
 	public ContaPoupancaDTO(ClienteDTO cliente, String senha) {
 		super(EnumConta.CONTA_POUPANCA, cliente, senha);
@@ -40,7 +46,7 @@ public class ContaPoupancaDTO extends ContaDTO {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() { //TODO faz sentido usar isso no meu projeto
-		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		return roles;
 	}
 
 	@Override

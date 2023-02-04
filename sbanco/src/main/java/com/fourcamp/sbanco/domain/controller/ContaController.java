@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,6 @@ import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
 import com.fourcamp.sbanco.domain.service.ClienteService;
 import com.fourcamp.sbanco.domain.service.ContaService;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -39,14 +38,12 @@ public class ContaController {
 		return ResponseEntity.ok(contaService.consultaByNumeroDaConta(numeroDaConta));
 	}
 
-	@PutMapping("/deposito")
-	@Transactional
+	@PatchMapping("/deposito")
 	public ResponseEntity<DetalhamentoTransacao> deposito(@RequestBody @Valid DepositoESaqueConta dados) {
 		return ResponseEntity.ok(contaService.efetuarDeposito(dados));
 	}
 
-	@PutMapping("/saque")
-	@Transactional
+	@PatchMapping("/saque")
 	public ResponseEntity<DetalhamentoTransacao> saque(@RequestBody @Valid DepositoESaqueConta dados) {
 		return ResponseEntity.ok(contaService.efetuarSaque(dados));
 	}
@@ -56,14 +53,12 @@ public class ContaController {
 		return ResponseEntity.ok().body(contaService.exibirExtrato(dados));
 	}
 
-	@PutMapping("/trocarsenha")
-	@Transactional
+	@PatchMapping("/trocarsenha")
 	public ResponseEntity<DetalhamentoDadosConta> trocarSenha(@RequestBody @Valid DadosAtualizarConta dados) {
 		return ResponseEntity.ok().body(contaService.trocarSenha(dados));
 	}
 
-	@PutMapping("/pix/cadastrarchave")
-	@Transactional
+	@PatchMapping("/pix/cadastrarchave")
 	public ResponseEntity<DetalhamentoChavesPix> cadastrarChavePix(@RequestBody @Valid DadosCadastroChavePix dados) {
 		return ResponseEntity.ok().body(contaService.cadastrarChavePix(dados));
 	}
@@ -73,8 +68,7 @@ public class ContaController {
 		return ResponseEntity.ok().body(contaService.exibirChavesPix(dados));
 	}
 
-	@PutMapping("/pix/enviarpix")
-	@Transactional
+	@PatchMapping("/pix/enviarpix")
 	public ResponseEntity<DetalhamentoTransacao> cadastrarChavePix(@RequestBody @Valid DadosPix dados) {
 		return ResponseEntity.ok().body(contaService.enviarPix(dados));
 	}

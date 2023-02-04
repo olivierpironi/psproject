@@ -41,7 +41,7 @@ public class FaturaDTO {
 	private CartaoDTO cartaoAssociado;
 	private BigDecimal limiteDisponivel;
 	private BigDecimal valorFatura;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@ElementCollection(targetClass = TransacaoDTO.class)
 	private List<TransacaoDTO> historicoTransacoes = new ArrayList<>();
 
