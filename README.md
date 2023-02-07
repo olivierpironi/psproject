@@ -2,9 +2,18 @@
 
 <h3 align="center"> 
 
-![STATUS-EM DESENVOLVIMENTO-yellow](https://user-images.githubusercontent.com/78506173/215845105-7f0a4fb1-0186-4912-bda9-aa4b2c46b841.svg)
+![STATUS-FINALIZADO-green](https://user-images.githubusercontent.com/78506173/217345734-032f35d8-51ec-4585-8a97-2f3008f771f5.svg)
 
  </h3>
+ 
+ <h3 align="center"> 
+ 
+![coverage-80%-green](https://user-images.githubusercontent.com/78506173/217345748-7ba64526-bc18-4380-b778-f71f1fc08154.svg)
+![tests-118 passes, 0 failed-blue](https://user-images.githubusercontent.com/78506173/217345757-c23dbe91-b543-497e-9c59-4485cf8eaf6c.svg)
+
+</h3>
+
+
 <h6 align="center"> 
  
 ![API-REST-orange](https://user-images.githubusercontent.com/78506173/213749530-c3e29755-63f2-43d8-860a-81c23fd3dec9.svg)
@@ -13,9 +22,11 @@
 ![-MySQL-blue](https://user-images.githubusercontent.com/78506173/213750497-5c0353b9-2e9c-4c2c-bc82-d612eaf6285d.svg)
 ![-MAVEN-9cf](https://user-images.githubusercontent.com/78506173/213756699-a20538f4-da6b-4a2a-b432-ad869d95f687.svg)
 ![-LOMBOK-yellow](https://user-images.githubusercontent.com/78506173/213756863-ea1b36f6-8dca-4762-813d-f1f09054ae58.svg)
+![-JUNIT 5-red](https://user-images.githubusercontent.com/78506173/217346917-a1e18286-1d1b-428a-88cc-41858c8a3510.svg)
 
 </h6>
-Em desenvolvimento utilizando uma adaptação da arquitetura clean architeture, o banco já conta com as seguintes funções:
+
+As únicas requisições que estão abertas para utilização sem a necessidade de login são as requisições de cadastro de clientes e de contas, pode-se fazer login com qualquer tipo de conta cadastrada. Todas as contas tem sua senha encriptada ao ser armazenada no banco de dados. Desenvolvido utilizando uma adaptação da arquitetura clean architeture, o banco conta com as seguintes funcionalidades:
 
 - `Conta Poupança`: 
   - Rendimento mensal através da poupança.
@@ -49,8 +60,7 @@ Em desenvolvimento utilizando uma adaptação da arquitetura clean architeture, 
    - Emitir fatura; 
    - Pagar fatura utilizando saldo da conta corrente.
 
-🛠️Proxímas etapas:
- - Testes unitários;
+🛠️Possíveis implementações:
  - Sistema de logs;
  - Sistema de roles utilizando spring secutiry;
  - Documentação com Swagger Fox.
