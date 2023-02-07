@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.fourcamp.sbanco.domain.dto.cartaocredito.CartaoCreditoDTO;
 import com.fourcamp.sbanco.domain.enums.EnumSeguroCredito;
-import com.fourcamp.sbanco.infra.util.Formatadores;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,16 +44,6 @@ public class ContratoSeguroDTO {
 		this.apoliceEletronica = UUID.randomUUID().toString();
 		this.dataContratacao = LocalDateTime.now();
 		this.cartaoAssegurado = cartaoAssegurado;
-	}
-
-	@Override
-	public String toString() {
-		return "\nSeguradora: " + seguradora.getNomeSeguradora() + 
-				"\nApólice Eletrônica: " + apoliceEletronica + 
-				"\nValor: R$" + Formatadores.arredonda(seguradora.getValor()) + " mensais." + 
-				"\nData de contratação: " + dataContratacao.format(Formatadores.formato) + 
-				"\nCondições de Acionamento: " + seguradora.getCondicoesAssionamento() + 
-				"\nInformações do Cartão Assegurado:" + cartaoAssegurado;
 	}
 
 }

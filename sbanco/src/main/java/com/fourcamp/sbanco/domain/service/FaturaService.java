@@ -2,25 +2,15 @@ package com.fourcamp.sbanco.domain.service;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fourcamp.sbanco.domain.dto.cartaocredito.CartaoCreditoDTO;
 import com.fourcamp.sbanco.domain.dto.fatura.FaturaDTO;
 import com.fourcamp.sbanco.domain.dto.transacao.TransacaoDTO;
 import com.fourcamp.sbanco.domain.enums.EnumTransacao;
-import com.fourcamp.sbanco.domain.repository.FaturaRepository;
-import com.fourcamp.sbanco.infra.util.Formatadores;
 
 @Service
 public class FaturaService {
-
-	@Autowired
-	private FaturaRepository repository;
-
-	public void salvar(FaturaDTO fatura) {
-		repository.save(fatura);
-	}
 
 	public void pagamentoFatura(CartaoCreditoDTO cartao, TransacaoDTO transacao) {
 		FaturaDTO fatura = cartao.getFatura();
@@ -56,19 +46,6 @@ public class FaturaService {
 
 		}
 		fatura.getHistoricoTransacoes().add(transacao);
-	}
-
-	public void exibe(CartaoCreditoDTO cartao) {
-		FaturaDTO fatura = cartao.getFatura();
-		System.out.println("\n**********FATURA CARTÃO DE CRÉDITO**********" + "\n                  BANCO OGP");
-		System.out.println(cartao);
-		fatura.getHistoricoTransacoes().stream().forEach(System.out::println);
-		System.out.println(
-				"\nFATURA ATUAL........................ + R$" + Formatadores.arredonda(fatura.getValorFatura()));
-		System.out.println(
-				"CRÉDITO DISPONÍVEL.................. + R$" + Formatadores.arredonda(fatura.getLimiteDisponivel()));
-		System.out.println("**********************************************");
-
 	}
 
 }

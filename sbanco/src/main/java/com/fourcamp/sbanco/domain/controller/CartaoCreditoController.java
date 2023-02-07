@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourcamp.sbanco.domain.dto.cartao.DadosAtualizarCartao;
-import com.fourcamp.sbanco.domain.dto.cartao.DadosNumeroESenhaCartao;
+import com.fourcamp.sbanco.domain.dto.cartao.AtualizarCartao;
+import com.fourcamp.sbanco.domain.dto.cartao.NumeroESenhaCartao;
 import com.fourcamp.sbanco.domain.dto.cartao.PagarComCartao;
+import com.fourcamp.sbanco.domain.dto.cartaocredito.AtualizarCartaoCredito;
+import com.fourcamp.sbanco.domain.dto.cartaocredito.CadastroCartaoCredito;
 import com.fourcamp.sbanco.domain.dto.cartaocredito.CartaoCreditoDTO;
-import com.fourcamp.sbanco.domain.dto.cartaocredito.DadosCadastroCartaoCredito;
-import com.fourcamp.sbanco.domain.dto.cartaocredito.DetalhamentoDadosCartaoCredito;
+import com.fourcamp.sbanco.domain.dto.cartaocredito.DetalhaCartaoCredito;
 import com.fourcamp.sbanco.domain.dto.fatura.PagarFatura;
 import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
 import com.fourcamp.sbanco.domain.service.CartaoCreditoService;
@@ -33,34 +34,39 @@ public class CartaoCreditoController {
 	private CartaoCreditoService cartaoService;
 
 	@PostMapping("/emitir")
-	public ResponseEntity<DetalhamentoDadosCartaoCredito> emitirCartaoDeCredito(@RequestBody @Valid DadosCadastroCartaoCredito dados) {
+	public ResponseEntity<DetalhaCartaoCredito> emitirCartaoDeCredito(@RequestBody @Valid CadastroCartaoCredito dados) {
 		CartaoCreditoDTO cartao = cartaoService.emitirCartaoDeCredito(dados);
-		return ResponseEntity.created(URI.create("/cartaocredito/"+cartao.getNumero())).body(new DetalhamentoDadosCartaoCredito(cartao));
+		return ResponseEntity.created(URI.create("/cartaocredito/"+cartao.getNumero())).body(new DetalhaCartaoCredito(cartao));
 	}
 
 	@GetMapping("/{numerodocartao}")
-	public ResponseEntity<DetalhamentoDadosCartaoCredito> detalhar(@PathVariable("numerodocartao") Long numeroDoCartao) {
+	public ResponseEntity<DetalhaCartaoCredito> detalhar(@PathVariable("numerodocartao") Long numeroDoCartao) {
 		return ResponseEntity.ok(cartaoService.getById(numeroDoCartao));
 	}
 
 	@PatchMapping("/desbloquear")
-	public ResponseEntity<DetalhamentoDadosCartaoCredito> desbloquear(@RequestBody @Valid DadosAtualizarCartao dados) {
+	public ResponseEntity<DetalhaCartaoCredito> desbloquear(@RequestBody @Valid AtualizarCartao dados) {
 		return ResponseEntity.ok(cartaoService.desbloquearCartao(dados));
 	}
 
 	@PatchMapping("/bloquear")
-	public ResponseEntity<DetalhamentoDadosCartaoCredito> bloquear(@RequestBody @Valid DadosAtualizarCartao dados) {
+	public ResponseEntity<DetalhaCartaoCredito> bloquear(@RequestBody @Valid AtualizarCartao dados) {
 		return ResponseEntity.ok(cartaoService.bloquearCartao(dados));
+	}
+	
+	@PatchMapping("/atualizar-dados")
+	public ResponseEntity<DetalhaCartaoCredito> atualizarCartao(@RequestBody @Valid AtualizarCartaoCredito dados) {
+		return ResponseEntity.ok(cartaoService.atualizarCartao(dados));
 	}
 
 	@PatchMapping("/pagar")
-	public ResponseEntity<Object> pagarComCredito(@RequestBody @Valid PagarComCartao dados) {
+	public ResponseEntity<List<DetalhamentoTransacao>> pagarComCredito(@RequestBody @Valid PagarComCartao dados) {
 		return ResponseEntity.ok().body(cartaoService.pagarComCredito(dados));
 		
 	}
 
 	@GetMapping("/exibirfatura")
-	public ResponseEntity<List<DetalhamentoTransacao>> exibirFatura(@RequestBody @Valid DadosNumeroESenhaCartao dados) {
+	public ResponseEntity<List<DetalhamentoTransacao>> exibirFatura(@RequestBody @Valid NumeroESenhaCartao dados) {
 		return ResponseEntity.ok().body(cartaoService.exibirFatura(dados));
 	}
 

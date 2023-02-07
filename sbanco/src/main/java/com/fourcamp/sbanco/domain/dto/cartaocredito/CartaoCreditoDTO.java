@@ -54,12 +54,4 @@ public class CartaoCreditoDTO extends CartaoDTO {
 		this.contratoSeguro = new ContratoSeguroDTO(seguradora, this);
 	}
 
-	@Override
-	public String toString() {
-		return "\nBANCO OGP" + 
-				"\nTitular: " + contaAssociada.getCliente().getNome() + 
-				"\nCategoria: " + contaAssociada.getCliente().getCategoria().getDescricao() + 
-				"\n" + tipoDeCartao.getDescricao() + 
-				"\nNº" + getNumero();
-	}
 }

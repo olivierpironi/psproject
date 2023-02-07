@@ -17,7 +17,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,11 +41,9 @@ import lombok.Setter;
 public class ContaCorrenteDTO extends ContaDTO {
 	protected LocalDate ultimaCobranca = LocalDate.of(2023, 1, 1);
 	@OneToOne(mappedBy = "contaAssociada",cascade = CascadeType.MERGE)
-	@Transient
-	private CartaoCreditoDTO cartaoDeCredito;
+	private transient CartaoCreditoDTO cartaoDeCredito;
 	@OneToOne(mappedBy = "contaAssociada",cascade = CascadeType.MERGE)
-	@Transient
-	private CartaoDebitoDTO cartaoDeDebito;
+	private transient CartaoDebitoDTO cartaoDeDebito;
 
 	public ContaCorrenteDTO(ClienteDTO cliente, String senha) {
 		super(EnumConta.CONTA_CORRENTE, cliente, senha);

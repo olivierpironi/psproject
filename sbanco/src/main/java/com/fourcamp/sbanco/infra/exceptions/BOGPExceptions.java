@@ -5,12 +5,8 @@ package com.fourcamp.sbanco.infra.exceptions;
 public abstract class BOGPExceptions extends RuntimeException {
 
 	
-	protected BOGPExceptions(String message) {
+	public BOGPExceptions(String message) {
 		super(message);
 	}
 
-	public void msg() {
-		System.out.println(this.getMessage());
-
-	}
 }

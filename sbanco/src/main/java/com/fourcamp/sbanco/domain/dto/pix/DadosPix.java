@@ -16,5 +16,6 @@ public record DadosPix(
 		
 		@NotBlank
 		String valorPix) {
+	
 
 }

@@ -47,7 +47,7 @@ public class ClienteDTO {
 	@Enumerated(EnumType.STRING)
 	private EnumCliente categoria;
 
-	public ClienteDTO(DadosCadastroCliente dados) {
+	public ClienteDTO(CadastroCliente dados) {
 		this.nome = dados.nome();
 		this.cpf = dados.cpf();
 		this.dataDeNascimento = LocalDate.parse(dados.dataDeNascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));

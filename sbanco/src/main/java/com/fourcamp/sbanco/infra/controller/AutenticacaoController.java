@@ -6,19 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fourcamp.sbanco.domain.dto.cliente.CadastroCliente;
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
-import com.fourcamp.sbanco.domain.dto.cliente.DadosCadastroCliente;
 import com.fourcamp.sbanco.domain.dto.cliente.DetalhaCliente;
+import com.fourcamp.sbanco.domain.dto.conta.CadastroConta;
 import com.fourcamp.sbanco.domain.dto.conta.ContaDTO;
-import com.fourcamp.sbanco.domain.dto.conta.DadosCadastroConta;
-import com.fourcamp.sbanco.domain.dto.conta.DetalhamentoDadosConta;
+import com.fourcamp.sbanco.domain.dto.conta.DetalhaConta;
 import com.fourcamp.sbanco.domain.dto.contacorrente.ContaCorrenteDTO;
 import com.fourcamp.sbanco.domain.dto.contapoupanca.ContaPoupancaDTO;
 import com.fourcamp.sbanco.domain.service.ClienteService;
@@ -44,7 +42,7 @@ public class AutenticacaoController {
 	
 
 	@PostMapping
-	public  ResponseEntity<Object> efetuarLogin(@RequestBody DadosAutenticacao dados){
+	public  ResponseEntity<DadosToken> efetuarLogin(@RequestBody DadosAutenticacao dados){
 		var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 		var autenticacao = manager.authenticate(token);
 		String tokenJWT = tokenService.gerarToken((ContaDTO) autenticacao.getPrincipal());
@@ -52,23 +50,20 @@ public class AutenticacaoController {
 	}
 	
 	@PostMapping("/cliente/cadastrar")
-	@Transactional 
-	public ResponseEntity<DetalhaCliente> cadastrar(@RequestBody @Valid DadosCadastroCliente dados, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<DetalhaCliente> cadastrar(@RequestBody @Valid CadastroCliente dados) {
 		ClienteDTO cliente = clienteService.salvar(dados);
 		return ResponseEntity.created(URI.create("/cliente/"+cliente.getCpf())).body(new DetalhaCliente(cliente));
 	}
 	
 	@PostMapping("/conta/cadastrarcp")
-	@Transactional
-	public ResponseEntity<DetalhamentoDadosConta> cadastrarCP(@RequestBody @Valid DadosCadastroConta dados, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<DetalhaConta> cadastrarCP(@RequestBody @Valid CadastroConta dados) {
 		ContaPoupancaDTO cp = contaService.cadastrarCP(dados);
-		return ResponseEntity.created(URI.create("/conta/"+cp.getNumeroDaConta().toString())).body(new DetalhamentoDadosConta(cp));
+		return ResponseEntity.created(URI.create("/conta/"+cp.getNumeroDaConta().toString())).body(new DetalhaConta(cp));
 	}
 	
 	@PostMapping("/conta/cadastrarcc")
-	@Transactional
-	public ResponseEntity<DetalhamentoDadosConta> cadastrarCC(@RequestBody @Valid DadosCadastroConta dados, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<DetalhaConta> cadastrarCC(@RequestBody @Valid CadastroConta dados) {
 		ContaCorrenteDTO cc = contaService.cadastrarCC(dados);
-		return ResponseEntity.created(URI.create("/conta/"+cc.getNumeroDaConta().toString())).body(new DetalhamentoDadosConta(cc));
+		return ResponseEntity.created(URI.create("/conta/"+cc.getNumeroDaConta().toString())).body(new DetalhaConta(cc));
 	}
 }

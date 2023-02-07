@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourcamp.sbanco.domain.dto.conta.DadosAtualizarConta;
-import com.fourcamp.sbanco.domain.dto.conta.DadosNumeroESenhaConta;
+import com.fourcamp.sbanco.domain.dto.conta.AtualizarConta;
 import com.fourcamp.sbanco.domain.dto.conta.DepositoESaqueConta;
-import com.fourcamp.sbanco.domain.dto.conta.DetalhamentoDadosConta;
-import com.fourcamp.sbanco.domain.dto.pix.DadosCadastroChavePix;
+import com.fourcamp.sbanco.domain.dto.conta.DetalhaConta;
+import com.fourcamp.sbanco.domain.dto.conta.NumeroESenhaConta;
+import com.fourcamp.sbanco.domain.dto.pix.CadastroChavePix;
 import com.fourcamp.sbanco.domain.dto.pix.DadosPix;
 import com.fourcamp.sbanco.domain.dto.pix.DetalhamentoChavesPix;
 import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
@@ -34,7 +34,7 @@ public class ContaController {
 	ClienteService clienteService;
 
 	@GetMapping("/{numerodaconta}")
-	public ResponseEntity<DetalhamentoDadosConta> detalhar(@PathVariable("numerodaconta") Long numeroDaConta) {
+	public ResponseEntity<DetalhaConta> detalhar(@PathVariable("numerodaconta") Long numeroDaConta) {
 		return ResponseEntity.ok(contaService.consultaByNumeroDaConta(numeroDaConta));
 	}
 
@@ -49,27 +49,27 @@ public class ContaController {
 	}
 
 	@GetMapping("/exibirextrato/")
-	public ResponseEntity<List<DetalhamentoTransacao>> exibirExtrato(@RequestBody @Valid DadosNumeroESenhaConta dados) {
+	public ResponseEntity<List<DetalhamentoTransacao>> exibirExtrato(@RequestBody @Valid NumeroESenhaConta dados) {
 		return ResponseEntity.ok().body(contaService.exibirExtrato(dados));
 	}
 
 	@PatchMapping("/trocarsenha")
-	public ResponseEntity<DetalhamentoDadosConta> trocarSenha(@RequestBody @Valid DadosAtualizarConta dados) {
+	public ResponseEntity<DetalhaConta> trocarSenha(@RequestBody @Valid AtualizarConta dados) {
 		return ResponseEntity.ok().body(contaService.trocarSenha(dados));
 	}
 
 	@PatchMapping("/pix/cadastrarchave")
-	public ResponseEntity<DetalhamentoChavesPix> cadastrarChavePix(@RequestBody @Valid DadosCadastroChavePix dados) {
+	public ResponseEntity<DetalhamentoChavesPix> cadastrarChavePix(@RequestBody @Valid CadastroChavePix dados) {
 		return ResponseEntity.ok().body(contaService.cadastrarChavePix(dados));
 	}
 
 	@GetMapping("/pix/exibirchavespix")
-	public ResponseEntity<List<DetalhamentoChavesPix>> exibirChavesPix(@RequestBody @Valid DadosNumeroESenhaConta dados) {
+	public ResponseEntity<List<DetalhamentoChavesPix>> exibirChavesPix(@RequestBody @Valid NumeroESenhaConta dados) {
 		return ResponseEntity.ok().body(contaService.exibirChavesPix(dados));
 	}
 
 	@PatchMapping("/pix/enviarpix")
-	public ResponseEntity<DetalhamentoTransacao> cadastrarChavePix(@RequestBody @Valid DadosPix dados) {
+	public ResponseEntity<DetalhamentoTransacao> enviarPix(@RequestBody @Valid DadosPix dados) {
 		return ResponseEntity.ok().body(contaService.enviarPix(dados));
 	}
 

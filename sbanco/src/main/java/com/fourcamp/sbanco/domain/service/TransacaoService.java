@@ -12,8 +12,8 @@ public class TransacaoService {
 	@Autowired
 	private TransacaoRepository repository;
 	
-	public void salvar(TransacaoDTO transacao) {
-		repository.save(transacao);
+	public TransacaoDTO salvar(TransacaoDTO transacao) {
+		return repository.save(transacao);
 	}
 
 }

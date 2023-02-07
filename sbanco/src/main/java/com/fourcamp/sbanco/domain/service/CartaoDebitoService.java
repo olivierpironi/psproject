@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fourcamp.sbanco.domain.dto.cartao.AtualizarCartao;
 import com.fourcamp.sbanco.domain.dto.cartao.CartaoDTO;
-import com.fourcamp.sbanco.domain.dto.cartao.DadosAtualizarCartao;
 import com.fourcamp.sbanco.domain.dto.cartao.PagarComCartao;
+import com.fourcamp.sbanco.domain.dto.cartaodebito.CadastroCartaoDebito;
 import com.fourcamp.sbanco.domain.dto.cartaodebito.CartaoDebitoDTO;
-import com.fourcamp.sbanco.domain.dto.cartaodebito.DadosCadastroCartaoDebito;
-import com.fourcamp.sbanco.domain.dto.cartaodebito.DetalhamentoDadosCartaoDebito;
+import com.fourcamp.sbanco.domain.dto.cartaodebito.DetalhaCartaoDebito;
 import com.fourcamp.sbanco.domain.dto.conta.ContaDTO;
 import com.fourcamp.sbanco.domain.dto.contacorrente.ContaCorrenteDTO;
 import com.fourcamp.sbanco.domain.dto.transacao.DetalhamentoTransacao;
@@ -22,12 +22,14 @@ import com.fourcamp.sbanco.domain.dto.transacao.TransacaoDTO;
 import com.fourcamp.sbanco.domain.enums.EnumTransacao;
 import com.fourcamp.sbanco.domain.repository.CartaoDebitoRepository;
 import com.fourcamp.sbanco.infra.exceptions.CartaoBloqueadoException;
+import com.fourcamp.sbanco.infra.exceptions.CartaoNaoExisteException;
 import com.fourcamp.sbanco.infra.exceptions.SenhaInvalidaException;
 import com.fourcamp.sbanco.infra.exceptions.TransacaoInvalidaException;
 
 @Service
 @Transactional
 public class CartaoDebitoService {
+	private static final CartaoNaoExisteException CARTAO_NAO_EXISTE_EXCEPTION = new CartaoNaoExisteException("Não existe um cartão com este número.");
 	@Autowired
 	private CartaoDebitoRepository cartaoRepository;
 	@Autowired
@@ -37,19 +39,11 @@ public class CartaoDebitoService {
 	@Autowired
 	private ExtratoBancarioService extratoService;
 
-	public void salvar(CartaoDebitoDTO cartao) {
-		cartaoRepository.save(cartao);
+	public DetalhaCartaoDebito getById(Long numeroDoCartao) {
+		return new DetalhaCartaoDebito(cartaoRepository.findById(numeroDoCartao).orElseThrow(() -> CARTAO_NAO_EXISTE_EXCEPTION));
 	}
 
-	public DetalhamentoDadosCartaoDebito getById(Long numeroDoCartao) {
-		return new DetalhamentoDadosCartaoDebito(cartaoRepository.findById(numeroDoCartao).get());
-	}
-
-	public List<CartaoDebitoDTO> getAll() {
-		return cartaoRepository.findAll();
-	}
-
-	public CartaoDebitoDTO emitirCartaoDeDebito(DadosCadastroCartaoDebito dados) {
+	public CartaoDebitoDTO emitirCartaoDeDebito(CadastroCartaoDebito dados) {
 		ContaCorrenteDTO conta = (ContaCorrenteDTO) contaService.getByNumeroDaConta(dados.numeroDaConta());
 		contaService.checaSenha(conta, dados.senhaDaConta());
 
@@ -59,19 +53,19 @@ public class CartaoDebitoService {
 		return cartao;
 	}
 
-	public DetalhamentoDadosCartaoDebito desbloquearCartao(DadosAtualizarCartao dados) {
-		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).get();
+	public DetalhaCartaoDebito desbloquearCartao(AtualizarCartao dados) {
+		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).orElseThrow(() -> CARTAO_NAO_EXISTE_EXCEPTION);
 		checaSenha(cartao, dados.senhaCartao());
 		setLimiteDiario(cartao);
 		cartao.setBloqueado(false);
-		return new DetalhamentoDadosCartaoDebito(cartao);
+		return new DetalhaCartaoDebito(cartao);
 	}
 
-	public DetalhamentoDadosCartaoDebito bloquearCartao(DadosAtualizarCartao dados) {
-		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).get();
+	public DetalhaCartaoDebito bloquearCartao(AtualizarCartao dados) {
+		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).orElseThrow(() -> CARTAO_NAO_EXISTE_EXCEPTION);
 		checaSenha(cartao, dados.senhaCartao());
 		cartao.setBloqueado(true);
-		return new DetalhamentoDadosCartaoDebito(cartao);
+		return new DetalhaCartaoDebito(cartao);
 	}
 
 	private void setLimiteDiario(CartaoDebitoDTO cartao) {
@@ -79,19 +73,19 @@ public class CartaoDebitoService {
 		renovarLimite(cartao.getNumero());
 	}
 
-	public DetalhamentoDadosCartaoDebito renovarLimite(Long numeroDoCartao) {
-		CartaoDebitoDTO cartao = cartaoRepository.findById(numeroDoCartao).get();
+	public DetalhaCartaoDebito renovarLimite(Long numeroDoCartao) {
+		CartaoDebitoDTO cartao = cartaoRepository.findById(numeroDoCartao).orElseThrow(() -> CARTAO_NAO_EXISTE_EXCEPTION);
 		if (cartao.getUltimaRenovacaoLimiteDisponivel().until(LocalDate.now(), ChronoUnit.DAYS) >= 1) {
 			cartao.setLimiteDisponivel(cartao.getLimiteDiario());
 			cartao.setUltimaRenovacaoLimiteDisponivel(LocalDate.now());
 		}
-		return new DetalhamentoDadosCartaoDebito(cartao);
+		return new DetalhaCartaoDebito(cartao);
 	}
 
 	public List<DetalhamentoTransacao> pagarComDebito(PagarComCartao dados) {
 		//Checagens
 		renovarLimite(dados.numeroDoCartao());
-		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).get();
+		CartaoDebitoDTO cartao = cartaoRepository.findById(dados.numeroDoCartao()).orElseThrow(() -> CARTAO_NAO_EXISTE_EXCEPTION);
 		ContaCorrenteDTO contaOrigem = cartao.getContaAssociada();
 		ContaDTO contaDestino = contaService.getByNumeroDaConta(dados.numeroDoCartao());
 
@@ -120,8 +114,7 @@ public class CartaoDebitoService {
 	}
 
 	private BigDecimal calculaTaxaOperacao(CartaoDebitoDTO cartao, BigDecimal bdPagamento) {
-		return bdPagamento
-				.multiply(cartao.getContaAssociada().getCliente().getCategoria().getTaxaUtilizacaoCartaoDeDebito());
+		return bdPagamento.multiply(cartao.getContaAssociada().getCliente().getCategoria().getTaxaUtilizacaoCartaoDeDebito());
 	}
 
 	private void checaSenha(CartaoDTO cartao, Integer senha) {

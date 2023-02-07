@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fourcamp.sbanco.domain.dto.cliente.DadosAtualizarCliente;
+import com.fourcamp.sbanco.domain.dto.cliente.AtualizarCliente;
 import com.fourcamp.sbanco.domain.dto.cliente.DetalhaCliente;
 import com.fourcamp.sbanco.domain.service.ClienteService;
 
@@ -23,7 +23,7 @@ public class ClienteController {
 	ClienteService clienteService;
 
 	@PatchMapping("/atualizar")
-	public ResponseEntity<DetalhaCliente> atualizarDados(@RequestBody @Valid DadosAtualizarCliente dados) {
+	public ResponseEntity<DetalhaCliente> atualizarDados(@RequestBody @Valid AtualizarCliente dados) {
 		return ResponseEntity.ok(clienteService.atualizarInformacoes(dados));
 		
 	}

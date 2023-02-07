@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
 import com.fourcamp.sbanco.domain.dto.conta.ContaDTO;

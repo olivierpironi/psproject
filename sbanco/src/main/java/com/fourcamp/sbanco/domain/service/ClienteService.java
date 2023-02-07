@@ -8,38 +8,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fourcamp.sbanco.domain.dto.cliente.ClienteDTO;
-import com.fourcamp.sbanco.domain.dto.cliente.DadosAtualizarCliente;
-import com.fourcamp.sbanco.domain.dto.cliente.DadosCadastroCliente;
+import com.fourcamp.sbanco.domain.dto.cliente.AtualizarCliente;
+import com.fourcamp.sbanco.domain.dto.cliente.CadastroCliente;
 import com.fourcamp.sbanco.domain.dto.cliente.DetalhaCliente;
 import com.fourcamp.sbanco.domain.repository.ClienteRepository;
+import com.fourcamp.sbanco.infra.exceptions.ClienteNaoExisteException;
 
 import jakarta.validation.Valid;
 
 @Service
+@Transactional
 public class ClienteService {
 
+	private static final ClienteNaoExisteException CLIENTE_NAO_EXISTE_EXCEPTION = new ClienteNaoExisteException("CPF não cadastrado.");
+	
 	@Autowired
 	private ClienteRepository clienteRepository;
 
-	public ClienteDTO salvar(@Valid DadosCadastroCliente dados) {
+	public ClienteDTO salvar(@Valid CadastroCliente dados) {
 		return clienteRepository.save(new ClienteDTO(dados));
 	}
 
 	public ClienteDTO getByCpf(String cpf) {
-		return clienteRepository.findById(cpf).get();
+		return clienteRepository.findById(cpf).orElseThrow(() -> CLIENTE_NAO_EXISTE_EXCEPTION);
 	}
 	public DetalhaCliente consultaClienteByCPF(String cpf) {
-		return new DetalhaCliente(clienteRepository.findById(cpf).get());
+		ClienteDTO cliente = clienteRepository.findById(cpf).orElseThrow(() -> CLIENTE_NAO_EXISTE_EXCEPTION);
+		return new DetalhaCliente(cliente);
 	}
 
-	public void deletarById(String cpf) {
-		clienteRepository.deleteById(cpf);
-
-	}
-
-	@Transactional
-	public DetalhaCliente atualizarInformacoes(@Valid DadosAtualizarCliente dados) {
-		ClienteDTO cliente = clienteRepository.findById(dados.cpf()).get();
+	public DetalhaCliente atualizarInformacoes(@Valid AtualizarCliente dados) {
+		ClienteDTO cliente = clienteRepository.findById(dados.cpf()).orElseThrow(() -> CLIENTE_NAO_EXISTE_EXCEPTION);
 		if (dados.nome() != null)
 			cliente.setNome(dados.nome());
 		if (dados.cpf() != null)
