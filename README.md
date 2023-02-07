@@ -58,6 +58,6 @@ Em desenvolvimento utilizando uma adaptação da arquitetura clean architeture, 
 
  📁 Arquivo JSON para consumo da API
 
-[BANCOOGP.postman_collection.zip](https://github.com/olivierpironi/psproject/files/10482576/BANCOOGP.postman_collection.zip)
+[BANCOOGP.postman_collection.zip](https://github.com/olivierpironi/psproject/files/10593788/BANCOOGP.postman_collection.zip)
 
 
